@@ -3,9 +3,12 @@ package com.nubiform.userservice.controller;
 import com.nubiform.userservice.dto.UserDto;
 import com.nubiform.userservice.service.UserService;
 import com.nubiform.userservice.vo.UserRequest;
+import com.nubiform.userservice.vo.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,10 +35,9 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
         UserDto userDto = modelMapper.map(userRequest, UserDto.class);
-        userService.createUser(userDto);
-
-        return "Create user method is called";
+        UserResponse userResponse = modelMapper.map(userService.createUser(userDto), UserResponse.class);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 }
