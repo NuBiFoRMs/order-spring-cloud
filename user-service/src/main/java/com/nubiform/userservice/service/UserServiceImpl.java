@@ -5,6 +5,7 @@ import com.nubiform.userservice.entity.UserEntity;
 import com.nubiform.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,10 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserid(UUID.randomUUID().toString());
-        userDto.setEncryptedPassword("encrypted_password");
+        userDto.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userRepository.save(userEntity);
         return modelMapper.map(userEntity, UserDto.class);
