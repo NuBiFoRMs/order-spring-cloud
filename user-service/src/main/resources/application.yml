@@ -5,6 +5,21 @@ spring:
   application:
     name: user-service
 
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance-id:${random.value}}
@@ -15,5 +30,13 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
+management:
+  endpoints.web.exposure.include: '*'
+
 greeting:
   message: Welcome to the Simple E-commerce.
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    com.nubiform: debug
