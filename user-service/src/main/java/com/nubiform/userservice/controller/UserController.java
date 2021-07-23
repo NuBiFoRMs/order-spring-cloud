@@ -13,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user-service")
 public class UserController {
 
     private final UserService userService;
@@ -26,7 +29,7 @@ public class UserController {
 
     private final ModelMapper modelMapper;
 
-    @GetMapping("/user-service/health-check")
+    @GetMapping("/health-check")
     public String status() {
         return String.format("It's Working in User Service on PORT %s", environment.getProperty("local.server.port"));
     }
@@ -42,5 +45,21 @@ public class UserController {
         UserDto userDto = modelMapper.map(userRequest, UserDto.class);
         UserResponse userResponse = modelMapper.map(userService.createUser(userDto), UserResponse.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getUsers() {
+        log.debug("getUsers");
+        return ResponseEntity.ok().body(userService.getUserByAll().stream()
+                .map(userDto -> modelMapper.map(userDto, UserResponse.class))
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/users/{userid}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable String userid) {
+        log.debug("getUser: {}", userid);
+        UserResponse userResponse = modelMapper.map(userService.getUserByUserid(userid), UserResponse.class);
+        userResponse.setOrders(new ArrayList<>());
+        return ResponseEntity.ok().body(userResponse);
     }
 }

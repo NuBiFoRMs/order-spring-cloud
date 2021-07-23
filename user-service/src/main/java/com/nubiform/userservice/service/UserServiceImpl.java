@@ -2,13 +2,16 @@ package com.nubiform.userservice.service;
 
 import com.nubiform.userservice.dto.UserDto;
 import com.nubiform.userservice.entity.UserEntity;
+import com.nubiform.userservice.exception.UsernameNotFoundException;
 import com.nubiform.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,5 +30,19 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userRepository.save(userEntity);
         return modelMapper.map(userEntity, UserDto.class);
+    }
+
+    @Override
+    public UserDto getUserByUserid(String userid) {
+        return userRepository.findByUserid(userid)
+                .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+                .orElseThrow(() -> new UsernameNotFoundException());
+    }
+
+    @Override
+    public List<UserDto> getUserByAll() {
+        return userRepository.findAll().stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+                .collect(Collectors.toList());
     }
 }
