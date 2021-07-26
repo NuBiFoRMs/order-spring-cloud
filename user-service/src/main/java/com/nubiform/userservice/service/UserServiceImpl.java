@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        userDto.setUserid(UUID.randomUUID().toString());
+        userDto.setUserId(UUID.randomUUID().toString());
         userDto.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userRepository.save(userEntity);
@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByUserid(String userid) {
-        return userRepository.findByUserid(userid)
+    public UserDto getUserByUserId(String userId) {
+        return userRepository.findByUserId(userId)
                 .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
                 .orElseThrow(() -> new UsernameNotFoundException());
     }

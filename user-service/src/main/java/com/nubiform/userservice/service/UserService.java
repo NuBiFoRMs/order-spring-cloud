@@ -8,7 +8,7 @@ public interface UserService {
 
     UserDto createUser(UserDto userDto);
 
-    UserDto getUserByUserid(String userid);
+    UserDto getUserByUserId(String userId);
 
     List<UserDto> getUserByAll();
 }

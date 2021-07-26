@@ -14,13 +14,13 @@ public class UserEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String userName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String userid;
+    private String userId;
 
     @Column(nullable = false)
     private String encryptedPassword;

@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 @Data
 public class UserDto {
 
-    private String username;
+    private String userName;
 
     private String password;
 
     private String email;
 
-    private String userid;
+    private String userId;
 
     private String encryptedPassword;
 
