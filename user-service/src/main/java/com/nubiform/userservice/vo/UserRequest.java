@@ -11,7 +11,7 @@ public class UserRequest {
 
     @NotBlank
     @Size(min = 2)
-    private String username;
+    private String userName;
 
     @NotBlank
     @Size(min = 8)

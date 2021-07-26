@@ -55,10 +55,10 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/users/{userid}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String userid) {
-        log.debug("getUser: {}", userid);
-        UserResponse userResponse = modelMapper.map(userService.getUserByUserid(userid), UserResponse.class);
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable String userId) {
+        log.debug("getUser: {}", userId);
+        UserResponse userResponse = modelMapper.map(userService.getUserByUserId(userId), UserResponse.class);
         userResponse.setOrders(new ArrayList<>());
         return ResponseEntity.ok().body(userResponse);
     }
